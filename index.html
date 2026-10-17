@@ -32,9 +32,20 @@ h4{margin:10px 0 4px;font-size:13px;color:#334155}.err{color:#e11d48;font-size:1
 .big{font-size:22px;text-align:center;font-weight:900}.pw{background:#fef3c7;border:2px dashed #d97706;padding:12px;border-radius:14px;margin:10px 0;font-size:14px}.pw code{font-size:22px;font-weight:900;direction:ltr;display:block;text-align:center;letter-spacing:2px;user-select:all}
 footer{background:#0f172a;color:#94a3b8;font-size:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}footer b{color:#fbbf24}footer a{background:#059669;color:#fff;text-decoration:none;padding:9px 14px;border-radius:12px;font-weight:700}
 @media print{header,.tabs,footer,button,.nop{display:none!important}body{background:#fff}}
+input,select{font-size:16px}button{min-height:42px}.sc{-webkit-overflow-scrolling:touch}.sc table{min-width:640px}
+.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs button{white-space:nowrap}
+.dg{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:14px;margin-bottom:12px}.dh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;font-weight:900;font-size:14px;color:#0c4a6e}
+.pb{height:8px;background:#e2e8f0;border-radius:9px;overflow:hidden;margin-bottom:12px}.pb i{display:block;height:100%;background:linear-gradient(90deg,#10b981,#0d9488);border-radius:9px}
+.ug{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px}
+.ut{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:12px;border:1px solid;font-size:12.5px;font-weight:700;line-height:1.35}
+.ut i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;flex:none}.ut small{display:block;font-weight:400;opacity:.8;font-size:11px}
+.ut.ok{background:#f0fdf4;border-color:#bbf7d0;color:#14532d}.ut.ok i{background:#10b981;color:#fff}.ut.no{background:#fff1f2;border-color:#fecdd3;color:#881337}.ut.no i{background:#fb7185;color:#fff}
+.chip small{font-weight:400;opacity:.75}#logo{height:46px;width:46px;object-fit:contain;border-radius:12px;background:#fff;padding:3px}.lg{cursor:pointer}footer p{line-height:1.7}
+@media(max-width:640px){header{padding:10px 12px}.lg h1{font-size:14px}.lg small{display:none}#bar .t{display:none}#bar button{padding:9px 13px}main{padding:10px}.card{padding:14px}
+footer{flex-direction:column;text-align:center}footer a{display:flex;justify-content:center;width:100%}.kp{grid-template-columns:1fr 1fr}.kp div{flex-direction:column;text-align:center;padding:10px}.ug{grid-template-columns:1fr 1fr}.row>*{min-width:100%}.tabs button{padding:11px 14px}}
 </style></head><body>
-<header><div class="lg"><i class="fa-solid fa-hospital-user"></i><div><h1>مديرية الشئون الصحية بدمياط</h1><small>إدارة الرعاية الأساسية - منظومة الإحصاء اليومي</small></div></div>
-<div id="bar"><span id="who"></span><span class="tag" id="rb"></span><button class="g s" onclick="show('pw')"><i class="fa-solid fa-key"></i> كلمة المرور</button><button class="g s" onclick="print()"><i class="fa-solid fa-print"></i> طباعة</button><button class="r s" onclick="out()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button></div></header>
+<header><div class="lg" onclick="home()"><img id="logo" src="logo.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fa-solid fa-hospital-user'}))"><div><h1>مديرية الشئون الصحية بدمياط</h1><small>إدارة الرعاية الأساسية - منظومة الإحصاء اليومي</small></div></div>
+<div id="bar"><span id="who"></span><span class="tag" id="rb"></span><button class="g s" onclick="home()"><i class="fa-solid fa-house"></i><span class="t"> الرئيسية</span></button><button class="g s" onclick="show('pw')"><i class="fa-solid fa-key"></i><span class="t"> كلمة المرور</span></button><button class="g s" onclick="print()"><i class="fa-solid fa-print"></i><span class="t"> طباعة</span></button><button class="r s" onclick="out()"><i class="fa-solid fa-right-from-bracket"></i><span class="t"> خروج</span></button></div></header>
 <main>
 <section id="login" class="card narrow"><div class="hero"><i class="fa-solid fa-user-shield"></i></div><h2 style="text-align:center;margin:0">تسجيل الدخول</h2>
 <label><i class="fa-solid fa-user"></i> اسم المستخدم</label><input id="lu" autocomplete="username" autocapitalize="none" dir="ltr">
@@ -43,31 +54,35 @@ footer{background:#0f172a;color:#94a3b8;font-size:12px;padding:16px 20px;display
 <div class="err" id="le"></div><button class="w" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> دخول</button>
 <p class="mu" style="text-align:center">نسيت كلمة المرور؟ تواصل مع مسؤول المنصة لإعادة تعيينها.</p></section>
 
-<section id="pw" class="card narrow"><h3><i class="fa-solid fa-key"></i> تغيير كلمة المرور</h3><p id="pm" class="mu">8 أحرف على الأقل وتجمع بين الحروف والأرقام.</p>
+<section id="pw" class="card narrow"><h3><i class="fa-solid fa-key"></i> تغيير كلمة المرور</h3><p id="pm" class="mu">6 أرقام على الأقل (يمكن أن تكون أرقاماً فقط)، ولا تستخدم أرقاماً متكررة أو متسلسلة مثل 111111 أو 123456.</p>
 <label>كلمة المرور الحالية / المؤقتة</label><input id="p0" type="password" dir="ltr"><label>كلمة المرور الجديدة</label><input id="p1" type="password" dir="ltr" autocomplete="new-password">
 <label>تأكيد كلمة المرور الجديدة</label><input id="p2" type="password" dir="ltr" autocomplete="new-password"><div class="err" id="pe"></div><button class="w" onclick="doPw()"><i class="fa-solid fa-floppy-disk"></i> حفظ</button></section>
 
 <section id="staff"><div class="card"><div class="pi" id="si"></div></div>
-<div class="card"><h3><i class="fa-solid fa-pen-to-square"></i> التبليغ اليومي</h3><div id="sw"></div><label>عدد الحالات (<span id="sd"></span>)</label>
+<div class="card"><h3><i class="fa-solid fa-pen-to-square"></i> التردد اليومي</h3><div id="sw"></div><label>عدد الحالات (<span id="sd"></span>)</label>
 <input id="sc" type="number" min="0" max="9999" inputmode="numeric" placeholder="0"><div class="err" id="se"></div><button class="w" onclick="doSub()"><i class="fa-solid fa-paper-plane"></i> حفظ الإحصاء</button>
 <h4>تم تسجيله اليوم</h4><div id="sl"></div></div>
 <div class="card"><h3><i class="fa-solid fa-chart-column"></i> نشاطك خلال آخر الأيام</h3><div class="ch"><canvas id="cs"></canvas></div></div></section>
 
-<section id="mgr"><div class="tabs"><button id="t_dash" onclick="tab('dash')"><i class="fa-solid fa-chart-pie"></i> لوحة المتابعة</button><button id="t_rep" onclick="tab('rep')"><i class="fa-solid fa-file-excel"></i> التقارير والتصدير</button><button id="t_srv" onclick="tab('srv')"><i class="fa-solid fa-sliders"></i> إدارة الخدمات</button><button id="t_usr" onclick="tab('usr')"><i class="fa-solid fa-users-gear"></i> المستخدمون</button></div>
-<div id="p_dash" class="hid"><div class="kp"><div><i class="fa-solid fa-clipboard-check"></i><span>بلّغوا<b id="k1"></b></span></div><div><i class="fa-solid fa-hourglass-half"></i><span>لم يبلّغوا<b id="k2"></b></span></div><div><i class="fa-solid fa-hospital-user"></i><span>حالات اليوم<b id="k3"></b></span></div><div id="k4w"><i class="fa-solid fa-building-circle-check"></i><span>وحدات بلّغت<b id="k4"></b></span></div></div>
+<section id="mgr"><div class="tabs"><button id="t_dash" onclick="tab('dash')"><i class="fa-solid fa-chart-pie"></i> لوحة المتابعة</button><button id="t_rep" onclick="tab('rep')"><i class="fa-solid fa-file-excel"></i> التقارير والتصدير</button><button id="t_srv" onclick="tab('srv')"><i class="fa-solid fa-sliders"></i> إدارة الخدمات</button><button id="t_unit" onclick="tab('unit')"><i class="fa-solid fa-people-group"></i> ملف الوحدة</button><button id="t_usr" onclick="tab('usr')"><i class="fa-solid fa-users-gear"></i> المستخدمون</button></div>
+<div id="p_dash" class="hid"><div class="card nop"><h3><i class="fa-solid fa-filter"></i> تصفية</h3><div class="row"><div id="fdw"><label>الإدارة</label><select id="df" onchange="fDir()"></select></div><div id="fnw"><label>الوحدة</label><select id="dn" onchange="drawDash()"></select></div><div><label>الحالة</label><select id="ds" onchange="drawDash()"><option value="">الكل</option><option value="1">بلّغ</option><option value="0">لم يبلّغ</option></select></div></div></div><div class="kp"><div><i class="fa-solid fa-clipboard-check"></i><span>بلّغوا<b id="k1"></b></span></div><div><i class="fa-solid fa-hourglass-half"></i><span>لم يبلّغوا<b id="k2"></b></span></div><div><i class="fa-solid fa-hospital-user"></i><span>حالات اليوم<b id="k3"></b></span></div><div id="k4w"><i class="fa-solid fa-building-circle-check"></i><span>وحدات بلّغت<b id="k4"></b></span></div></div>
 <div class="g2"><div class="card"><h3><i class="fa-solid fa-chart-column"></i> حسب الخدمة</h3><div class="ch"><canvas id="c1"></canvas></div></div><div class="card"><h3><i class="fa-solid fa-chart-pie"></i> <span id="c2t"></span></h3><div class="ch"><canvas id="c2"></canvas></div></div></div>
-<div class="card" id="uw"><h3><i class="fa-solid fa-hospital"></i> حالة التبليغ لكل وحدة</h3><div id="uc"></div></div>
-<div class="card"><div class="row nop" style="margin-bottom:10px"><select id="df" onchange="drawDash()"></select><select id="ds" onchange="drawDash()"><option value="">كل الحالات</option><option value="1">بلّغ</option><option value="0">لم يبلّغ</option></select></div><div class="sc"><table id="dt"></table></div></div></div>
+<div class="card" id="uw"><h3><i class="fa-solid fa-hospital"></i> حالة التردد لكل وحدة</h3><div id="uc"></div></div>
+<div class="card"><h3><i class="fa-solid fa-table-list"></i> تفاصيل التردد اليومي</h3><div class="sc"><table id="dt"></table></div></div></div>
 <div id="p_rep" class="hid"><div class="card nop"><div class="row"><div><label>من</label><input type="date" id="rf"></div><div><label>إلى</label><input type="date" id="rt"></div><button onclick="loadRep()"><i class="fa-solid fa-magnifying-glass"></i> عرض</button><button class="g" onclick="XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById('rtb')),'احصاء.xlsx')"><i class="fa-solid fa-file-excel"></i> Excel</button></div></div>
 <div class="card"><div class="ch"><canvas id="c3"></canvas></div></div><div class="card sc"><table id="rtb"></table></div></div>
 <div id="p_srv" class="hid"><div class="card"><h3><i class="fa-solid fa-circle-plus"></i> إضافة عيادة أو مبادرة</h3><div class="row"><div><label>الاسم</label><input id="vn" placeholder="مثال: عيادة تنظيم الأسرة"></div><div id="vdw"><label>تتبع</label><select id="vd"></select></div><button onclick="addSrv()"><i class="fa-solid fa-plus"></i> إضافة</button></div><div class="err" id="ve"></div></div>
 <div class="card"><h3><i class="fa-solid fa-list-check"></i> الخدمات الحالية</h3><div id="vl"></div></div></div>
+<div id="p_unit" class="hid"><div class="card" id="upSel"><div class="row"><div id="us_d"><label>الإدارة</label><select id="vd2" onchange="vu()"></select></div><div><label>الوحدة</label><select id="vu2" onchange="loadUnit()"></select></div></div></div>
+<div class="card"><div class="pi"><div class="av"><i class="fa-solid fa-hospital"></i></div><div><b id="upn"></b><div class="mu" id="upm"></div></div></div></div>
+<div class="card" id="upAdd"><h3><i class="fa-solid fa-user-plus"></i> تسجيل عضو بالوحدة</h3><div class="row"><div><label>الاسم</label><input id="mn"></div><div><label>اسم المستخدم (إنجليزي)</label><input id="mus" dir="ltr" autocapitalize="none"></div><div><label>الوظيفة</label><select id="mk" onchange="mForm()"><option value="nurse">تمريض (عيادة ثابتة)</option><option value="doctor">طبيب (عيادة متغيرة)</option></select></div><div id="mfs"><label>العيادة</label><select id="ms"></select></div></div><div class="err" id="merr"></div><div id="mb"></div><button class="w" onclick="addM()"><i class="fa-solid fa-user-plus"></i> إضافة</button></div>
+<div class="card sc"><table id="mt"></table></div></div>
 <div id="p_usr" class="hid"><div class="card"><h3><i class="fa-solid fa-user-plus"></i> إضافة مستخدم</h3><div class="row"><div><label>الاسم</label><input id="un"></div><div><label>اسم المستخدم (إنجليزي)</label><input id="uu" dir="ltr" autocapitalize="none"></div>
-<div><label>الصلاحية</label><select id="ur" onchange="uForm()"><option value="clinic">موظف عيادة</option><option value="unit">وحدة / مركز</option><option value="dept">الإدارة الصحية</option><option value="admin">مديرية الشئون الصحية</option></select></div></div>
-<div class="row"><div id="f_d"><label>الإدارة</label><select id="ud" onchange="uUnits();uForm()"></select></div><div id="f_u"><label>الوحدة</label><select id="ut"></select></div><div id="f_k"><label>الوظيفة</label><select id="uk" onchange="uForm()"><option value="nurse">تمريض (عيادة ثابتة)</option><option value="doctor">طبيب (عيادة متغيرة)</option></select></div><div id="f_s"><label>العيادة</label><select id="us"></select></div></div>
+<div><label>الصلاحية</label><select id="ur" onchange="uForm()"><option value="unit">وحدة / مركز</option><option value="dept">الإدارة الصحية</option><option value="admin">مديرية الشئون الصحية</option></select></div></div>
+<div class="row"><div id="f_d"><label>الإدارة</label><select id="ud" onchange="uUnits();uForm()"></select></div><div id="f_u"><label>الوحدة</label><select id="ut"></select></div></div>
 <div class="err" id="ue"></div><div id="ub"></div><button class="w" onclick="addU()"><i class="fa-solid fa-user-plus"></i> إضافة</button></div><div class="card sc"><table id="ul"></table></div></div></section>
 </main>
-<footer><div><p style="margin:0;color:#cbd5e1">تصميم وتطوير: <b>د. محمد فايز المحلاوي</b> — جميع الحقوق محفوظة © 2026</p><p style="margin:2px 0 0">منصة إلكترونية لتيسير الإحصاء اليومي لخدمات الرعاية الأولية بمديرية الشئون الصحية بدمياط</p></div>
+<footer><div><p style="margin:0;color:#cbd5e1">جميع حقوق الفكرة والتصميم والنشر محفوظة لـ <b>د. محمد فايز المحلاوي</b></p><p style="margin:2px 0 0">المنصة تحت الاختبار والترخيص لتسهيل سير العمل وخدمة المواطنين والمجتمع بمديرية الصحة بدمياط</p></div>
 <a target="_blank" href="https://wa.me/201028945823?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%AD%D8%AA%D8%A7%D8%AC%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D8%A5%D8%AD%D8%B5%D8%A7%D8%A1%20%D8%A7%D9%84%D9%8A%D9%88%D9%85%D9%8A"><i class="fa-brands fa-whatsapp"></i> <span dir="ltr">01028945823</span> — تواصل مع مسؤول المنصة</a></footer>
 <script>
 const URL_='https://smvvathrrzduclbrnmop.supabase.co',KEY='sb_publishable_fhd9gwrMeLSpxqNgjTUeWA_lz0YXdQH',DOM='@dh-stat.com';
@@ -81,7 +96,7 @@ const DIRS0={
 const DIRS=Object.fromEntries(Object.entries(DIRS0).map(([k,v])=>[k,v.split('|')]));
 let U=null,SVS=[],DR=[],DS=[],MY=[],charts={};
 const $=i=>document.getElementById(i),esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-const KN={nurse:'تمريض',doctor:'طبيب'},RL={clinic:'موظف عيادة',unit:'وحدة / مركز',dept:'الإدارة الصحية',admin:'مديرية الشئون الصحية'};
+const KN={nurse:'تمريض',doctor:'طبيب'},RL={unit:'وحدة / مركز',dept:'الإدارة الصحية',admin:'مديرية الشئون الصحية'};
 const sn=id=>(SVS.find(s=>s.id==id)||{}).name||'—',act=d=>SVS.filter(s=>s.active&&(!s.directorate||s.directorate==d));
 const td=()=>new Date().toLocaleDateString('sv',{timeZone:'Africa/Cairo'}),hm=s=>new Date(s).toLocaleTimeString('en-GB',{timeZone:'Africa/Cairo',hour:'2-digit',minute:'2-digit'});
 const sum=(a,f)=>a.reduce((n,x)=>n+f(x),0),group=(a,k,v)=>{const m={};a.forEach(x=>m[k(x)]=(m[k(x)]||0)+v(x));return m};
@@ -95,13 +110,13 @@ async function api0(a,d){switch(a){
  case 'login':{const r=await SB.auth.signInWithPassword({email:String(d.u||'').trim().toLowerCase()+DOM,password:d.p});if(r.error)throw Error('اسم المستخدم أو كلمة المرور غير صحيحة');
   try{return{user:prof(await myProf())}}catch(e){throw Error('الحساب غير مفعّل')}}
  case 'out':return SB.auth.signOut();
- case 'pw':{const n=String(d.n||'');if(n.length<8||!/\d/.test(n)||!/\D/.test(n))throw Error('كلمة المرور الجديدة: 8 أحرف على الأقل وتجمع حروفاً وأرقاماً');
+ case 'pw':{const n=String(d.n||'');if(n.length<6)throw Error('كلمة المرور لا تقل عن 6 أرقام أو حروف');if(/^(.)\1*$/.test(n)||'01234567890123'.includes(n)||'98765432109876'.includes(n)||n.toLowerCase()==U.username)throw Error('كلمة المرور سهلة التخمين (أرقام متكررة أو متسلسلة)، اختر رقماً آخر');
   if((await SB.auth.signInWithPassword({email:U.username+DOM,password:d.o})).error)throw Error('كلمة المرور الحالية غير صحيحة');
   ck(await SB.auth.updateUser({password:n}));ck(await SB.rpc('done_pw'));return{ok:1}}
  case 'svc':return ck(await SB.from('services').select('*').order('created_at'));
  case 'svadd':{const n=String(d.name||'').trim();if(n.length<2)throw Error('اكتب اسم الخدمة');return ck(await SB.from('services').insert({name:n,directorate:d.dir||null}))}
  case 'svdel':return ck(await SB.from('services').update({active:false}).eq('id',d.id));
- case 'me':{const p=await myProf();return{user:prof(p),rows:ck(await SB.from('submissions').select('date,service,count').eq('user_id',p.id).order('date',{ascending:false}).limit(60))}}
+ case 'me':{const p=await myProf();return{user:prof(p),rows:ck(await SB.from('submissions').select('date,service,count,updated_at').eq('user_id',p.id).order('date',{ascending:false}).limit(60))}}
  case 'sub':{const c=parseInt(d.c,10);if(!(c>=0&&c<=9999))throw Error('أدخل رقماً صحيحاً بين 0 و 9999');ck(await SB.rpc('submit',{c,s:d.s||null}));return{ok:1}}
  case 'dash':{const[u,s]=await Promise.all([SB.from('profiles').select('*').eq('role','clinic').eq('active',true).limit(1000),SB.from('submissions').select('user_id,directorate,unit,service,kind,count,updated_at').eq('date',td()).limit(2000)]);return{rows:ck(u).map(prof),subs:ck(s)}}
  case 'rep':return ck(await SB.rpc('report',{f:d.f,t:d.to})).map(x=>({directorate:x.directorate,unit:x.unit,service:x.service,kind:x.kind,count:+x.total}));
@@ -116,34 +131,39 @@ async function out(){try{await api('out')}catch(e){}clear()}
 async function doLogin(){$('le').textContent='';try{const r=await api('login',{u:$('lu').value,p:$('lp').value});U=r.user;$('lp').value='';go()}catch(e){$('le').textContent=e.message}}
 async function doPw(){$('pe').textContent='';if($('p1').value!=$('p2').value)return $('pe').textContent='كلمتا المرور غير متطابقتين';
  try{await api('pw',{o:$('p0').value,n:$('p1').value});['p0','p1','p2'].forEach(i=>$(i).value='');U.mustChange=false;go()}catch(e){$('pe').textContent=e.message}}
-async function go(){$('who').textContent=U.name;$('rb').textContent=RL[U.role];
- if(U.mustChange){$('pm').textContent='هذه أول مرة تدخل فيها بكلمة مؤقتة. اختر كلمة مرور جديدة (8 أحرف على الأقل، حروف وأرقام).';return show('pw')}
+async function go(){$('who').textContent=U.name;$('rb').textContent=U.role=='clinic'?KN[U.kind]:RL[U.role];
+ if(U.mustChange){$('pm').textContent='هذه أول مرة تدخل فيها بكلمة مؤقتة. اختر كلمة مرور جديدة: 6 أرقام على الأقل (أرقام فقط تكفي).';return show('pw')}
  try{const r=await api('me');U=r.user;SVS=await api('svc');$('who').textContent=U.name;
  if(U.role=='clinic'){show('staff');const t=td();MY=r.rows.filter(x=>x.date==t);
   $('si').innerHTML=`<div class="av"><i class="fa-solid ${U.kind=='doctor'?'fa-user-doctor':'fa-user-nurse'}"></i></div><div><b>${esc(U.name)}</b><div class="mu">${esc(U.unit)} — ${esc(U.directorate)}</div><span class="tag">${KN[U.kind]}</span></div>`;
   $('sw').innerHTML=U.kind=='doctor'?`<label>العيادة / الخدمة اليوم (تقدر تغيّرها كل يوم)</label><select id="ssv" onchange="fillS()">${opt(act(U.directorate),s=>s.id)}</select>`:`<label>العيادة</label><div class="fx"><i class="fa-solid fa-stethoscope"></i> ${esc(sn(U.service))}</div>`;
   $('sd').textContent=new Date().toLocaleDateString('ar-EG');fillS();
-  $('sl').innerHTML=MY.map(x=>`<span class="chip ok"><i class="fa-solid fa-circle-check"></i> ${esc(sn(x.service))}: ${x.count}</span>`).join('')||'<span class="mu">لم يُسجَّل شيء اليوم بعد</span>';
+  $('sl').innerHTML=MY.map(x=>`<span class="chip ok"><i class="fa-solid fa-circle-check"></i> ${esc(sn(x.service))}: ${x.count} <small>${hm(x.updated_at)}</small></span>`).join('')||'<span class="mu">لم يُسجَّل شيء اليوم بعد</span>';
   const m=group(r.rows,x=>x.date,x=>x.count),ds=Object.keys(m).sort().slice(-7);
   ch('cs','bar',ds.map(d=>new Date(d+'T12:00').toLocaleDateString('ar-EG',{weekday:'short'})),ds.map(d=>m[d]),false)}
  else{show('mgr');const D=U.role=='admin'||U.role=='dept';$('t_srv').style.display=D?'':'none';$('t_usr').style.display=U.role=='admin'?'':'none';tab('dash')}}catch(e){if(U)alert(e.message)}}
 function fillS(){const s=U.kind=='doctor'?$('ssv').value:U.service,m=MY.find(x=>x.service==s);$('sc').value=m?m.count:''}
 async function doSub(){$('se').textContent='';const v=$('sc').value;if(v==='')return $('se').textContent='أدخل العدد (0 إن لم توجد حالات)';
  try{await api('sub',{c:v,s:U.kind=='doctor'?$('ssv').value:null});go()}catch(e){$('se').style.color='';$('se').textContent=e.message}}
-function tab(t){['dash','rep','srv','usr'].forEach(x=>{$('p_'+x).style.display=x==t?'block':'none';$('t_'+x).className=x==t?'on':''});
- if(t=='dash')loadDash();if(t=='rep'){if(!$('rf').value){const n=td();$('rf').value=n.slice(0,8)+'01';$('rt').value=n}loadRep()}if(t=='srv')loadSrv();if(t=='usr')loadUsr()}
-async function loadDash(){try{const r=await api('dash');DR=r.rows;DS=r.subs;$('df').innerHTML='<option value="">كل الإدارات</option>'+opt(Object.keys(DIRS).filter(d=>U.role=='admin'));$('df').style.display=U.role=='admin'?'':'none';drawDash()}catch(e){alert(e.message)}}
-function drawDash(){const f=$('df').value,s=$('ds').value,A=U.role=='admin',D=A||U.role=='dept',R=DR.filter(x=>!f||x.directorate==f),S=DS.filter(x=>!f||x.directorate==f),done=new Set(S.map(x=>x.user_id));
+let cur='dash';function tab(t){cur=t;['dash','rep','srv','unit','usr'].forEach(x=>{$('p_'+x).style.display=x==t?'block':'none';$('t_'+x).className=x==t?'on':''});
+ if(t=='dash')loadDash();if(t=='rep'){if(!$('rf').value){const n=td();$('rf').value=n.slice(0,8)+'01';$('rt').value=n}loadRep()}if(t=='srv')loadSrv();if(t=='unit')initUnit();if(t=='usr')loadUsr()}
+async function loadDash(){try{const r=await api('dash');DR=r.rows;DS=r.subs;const A=U.role=='admin',O=U.role=='unit';
+ $('df').innerHTML='<option value="">كل الإدارات</option>'+(A?opt(Object.keys(DIRS)):'');$('fdw').style.display=A?'':'none';$('fnw').style.display=O?'none':'';
+ $('dn').innerHTML='<option value="">كل الوحدات</option>'+(!A&&!O?opt(DIRS[U.directorate]):'');drawDash()}catch(e){alert(e.message)}}
+function fDir(){const d=$('df').value;$('dn').innerHTML='<option value="">كل الوحدات</option>'+(d?opt(DIRS[d]):'');drawDash()}
+function drawDash(){const A=U.role=='admin',D=A||U.role=='dept',f=A?$('df').value:'',n=$('dn').value,s=$('ds').value,
+ R=DR.filter(x=>(!f||x.directorate==f)&&(!n||x.unit==n)),S=DS.filter(x=>(!f||x.directorate==f)&&(!n||x.unit==n)),done=new Set(S.map(x=>x.user_id));
  $('k1').textContent=R.filter(x=>done.has(x.id)).length+' / '+R.length;$('k2').textContent=R.filter(x=>!done.has(x.id)).length;$('k3').textContent=sum(S,x=>x.count);
  $('k4w').style.display=$('uw').style.display=D?'':'none';
- if(D){const dirs=f?[f]:Object.keys(DIRS).filter(d=>A||d==U.directorate);let a=0,n=0;
-  $('uc').innerHTML=dirs.map(d=>{const us=DIRS[d].map(u=>{const m=S.filter(x=>x.directorate==d&&x.unit==u);return{u,ok:m.length>0,c:sum(m,x=>x.count)}});a+=us.filter(x=>x.ok).length;n+=us.length;
-   return`<h4><i class="fa-solid fa-location-dot"></i> ${esc(d)} (${us.filter(x=>x.ok).length}/${us.length})</h4>`+us.map(x=>`<span class="chip ${x.ok?'ok':'no'}"><i class="fa-solid ${x.ok?'fa-circle-check':'fa-hourglass-half'}"></i> ${esc(x.u)}${x.ok?' · '+x.c:''}</span>`).join('')}).join('');$('k4').textContent=a+' / '+n}
+ if(D){const dirs=f?[f]:Object.keys(DIRS).filter(d=>A||d==U.directorate);let a=0,t=0;
+  $('uc').innerHTML=dirs.map(d=>{const us=DIRS[d].filter(u=>!n||u==n).map(u=>{const m=S.filter(x=>x.directorate==d&&x.unit==u);return{u,ok:m.length>0,c:sum(m,x=>x.count)}}),k=us.filter(x=>x.ok).length;a+=k;t+=us.length;
+   const v=us.filter(x=>s==''||(s=='1')==x.ok);if(!v.length)return'';
+   return`<div class="dg"><div class="dh"><span><i class="fa-solid fa-location-dot" style="color:#0284c7"></i> ${esc(d)}</span><span class="tag">${k} / ${us.length}</span></div><div class="pb"><i style="width:${us.length?Math.round(k*100/us.length):0}%"></i></div><div class="ug">${v.map(x=>`<div class="ut ${x.ok?'ok':'no'}"><i class="fa-solid ${x.ok?'fa-check':'fa-clock'}"></i><span>${esc(x.u)}<small>${x.ok?x.c+' حالة':'لم يبلّغ بعد'}</small></span></div>`).join('')}</div></div>`}).join('')||'<p class="mu">لا توجد نتائج</p>';$('k4').textContent=a+' / '+t}
  const bs=group(S,x=>sn(x.service),x=>x.count);ch('c1','bar',Object.keys(bs),Object.values(bs),D);
  const g=A&&!f?group(S,x=>x.directorate,x=>x.count):U.role=='unit'?group(S,x=>KN[x.kind],x=>x.count):group(S,x=>x.unit,x=>x.count);
  $('c2t').textContent=A&&!f?'حسب الإدارة':U.role=='unit'?'تمريض / أطباء':'حسب الوحدة';ch('c2','doughnut',Object.keys(g),Object.values(g),D);
  $('dt').innerHTML='<tr><th>الإدارة</th><th>الوحدة</th><th>الاسم</th><th>الوظيفة</th><th>العيادة</th><th>الحالة</th><th>العدد</th></tr>'+R.filter(x=>s==''||(s=='1')==done.has(x.id)).map(x=>{const m=S.filter(y=>y.user_id==x.id);
-  return`<tr><td>${esc(x.directorate)}</td><td>${esc(x.unit)}</td><td>${esc(x.name)}</td><td>${KN[x.kind]}</td><td>${[...new Set(m.map(y=>esc(sn(y.service))))].join('، ')||(x.kind=='nurse'?esc(sn(x.service)):'—')}</td><td>${m.length?`<span class="b ok"><i class="fa-solid fa-check"></i> بلّغ ${hm(m[0].updated_at)}</span>`:'<span class="b no"><i class="fa-solid fa-hourglass-half"></i> لم يبلّغ</span>'}</td><td>${sum(m,y=>y.count)}</td></tr>`}).join('')}
+  return`<tr><td>${esc(x.directorate)}</td><td>${esc(x.unit)}</td><td>${esc(x.name)}</td><td>${KN[x.kind]}</td><td>${[...new Set(m.map(y=>esc(sn(y.service))))].join('، ')||(x.kind=='nurse'?esc(sn(x.service)):'—')}</td><td>${m.length?`<span class="b ok"><i class="fa-solid fa-check"></i> بلّغ ${hm(m[0].updated_at)}</span>`:'<span class="b no"><i class="fa-solid fa-clock"></i> لم يبلّغ</span>'}</td><td>${sum(m,y=>y.count)}</td></tr>`}).join('')}
 async function loadRep(){try{const r=await api('rep',{f:$('rf').value,to:$('rt').value}),m=group(r,x=>[x.directorate,x.unit,x.service,x.kind].join('|'),x=>x.count),e=Object.entries(m).sort();
  $('rtb').innerHTML='<tr><th>الإدارة</th><th>الوحدة</th><th>العيادة</th><th>الوظيفة</th><th>الإجمالي</th></tr>'+e.map(([k,v])=>{const p=k.split('|');return`<tr><td>${esc(p[0])}</td><td>${esc(p[1])}</td><td>${esc(sn(p[2]))}</td><td>${KN[p[3]]}</td><td>${v}</td></tr>`}).join('')+`<tr><th colspan="4">الإجمالي</th><th>${sum(e,x=>x[1])}</th></tr>`;
  const g=group(r,x=>sn(x.service),x=>x.count);ch('c3','bar',Object.keys(g),Object.values(g),U.role=='admin'||U.role=='dept')}catch(e){alert(e.message)}}
@@ -152,15 +172,27 @@ async function loadSrv(){try{SVS=await api('svc');const A=U.role=='admin';$('vd'
  $('vl').innerHTML=SVS.filter(s=>s.active).map(s=>`<span class="chip"><i class="fa-solid fa-stethoscope" style="color:#0284c7"></i> ${esc(s.name)} <span class="tag">${s.directorate?esc(s.directorate):'عام'}</span>${canDel(s)?`<button class="r s" onclick="delSrv('${s.id}')"><i class="fa-solid fa-xmark"></i></button>`:''}</span>`).join('')}catch(e){alert(e.message)}}
 async function addSrv(){$('ve').textContent='';try{await api('svadd',{name:$('vn').value,dir:$('vd').value});$('vn').value='';loadSrv()}catch(e){$('ve').textContent=e.message}}
 async function delSrv(id){if(!confirm('حذف هذه الخدمة؟ ستختفي من خيارات التبليغ، وتبقى بيانات التقارير القديمة كما هي.'))return;try{await api('svdel',{id});loadSrv()}catch(e){alert(e.message)}}
+const acts=u=>(u.active=='Y'?`<button class="s g" onclick="rs('${esc(u.username)}')" title="إعادة تعيين كلمة المرور"><i class="fa-solid fa-key"></i></button> `:'')+(u.username!=U.username?`<button class="s ${u.active=='Y'?'g':''}" onclick="ac('${esc(u.username)}',${u.active!='Y'})" title="تعطيل / تفعيل"><i class="fa-solid ${u.active=='Y'?'fa-ban':'fa-circle-check'}"></i></button> <button class="s r" onclick="dl('${esc(u.username)}')" title="حذف"><i class="fa-solid fa-trash"></i></button>`:'');
+const rl=()=>cur=='unit'?loadUnit():loadUsr();
 async function loadUsr(){try{SVS=await api('svc');if(!$('ud').options.length){$('ud').innerHTML=opt(Object.keys(DIRS));uUnits()}uForm();
- const r=await api('users');$('ul').innerHTML='<tr><th>الاسم</th><th>المستخدم</th><th>الصلاحية</th><th>الوحدة / العيادة</th><th></th></tr>'+r.map(u=>`<tr><td>${esc(u.name)}</td><td dir="ltr">${esc(u.username)}</td><td>${RL[u.role]} ${u.directorate&&u.role!='clinic'&&u.role!='unit'?'- '+esc(u.directorate):''}</td><td>${u.role=='clinic'?esc(u.unit)+' / '+(u.kind=='nurse'?esc(sn(u.service)):'عيادة متغيرة')+' ('+KN[u.kind]+')':esc(u.unit)}</td>
- <td>${u.active=='Y'?`<button class="s g" onclick="rs('${esc(u.username)}')" title="إعادة تعيين كلمة المرور"><i class="fa-solid fa-key"></i></button> `:''}${u.username!=U.username?`<button class="s ${u.active=='Y'?'g':''}" onclick="ac('${esc(u.username)}',${u.active!='Y'})" title="تعطيل / تفعيل"><i class="fa-solid ${u.active=='Y'?'fa-ban':'fa-circle-check'}"></i></button> <button class="s r" onclick="dl('${esc(u.username)}')" title="حذف"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('')}catch(e){alert(e.message)}}
+ const r=(await api('users')).filter(u=>u.role!='clinic');$('ul').innerHTML='<tr><th>الاسم</th><th>المستخدم</th><th>الصلاحية</th><th>الوحدة</th><th></th></tr>'+r.map(u=>`<tr><td>${esc(u.name)}${u.active!='Y'?' <span class="b no">معطّل</span>':''}</td><td dir="ltr">${esc(u.username)}</td><td>${RL[u.role]}${u.role=='dept'?' - '+esc(u.directorate):''}</td><td>${esc(u.unit)}</td><td>${acts(u)}</td></tr>`).join('')}catch(e){alert(e.message)}}
 function uUnits(){$('ut').innerHTML=opt(DIRS[$('ud').value])}
-function uForm(){const r=$('ur').value,k=$('uk').value;$('f_d').style.display=r=='admin'?'none':'';$('f_u').style.display=r=='clinic'||r=='unit'?'':'none';$('f_k').style.display=r=='clinic'?'':'none';$('f_s').style.display=r=='clinic'&&k=='nurse'?'':'none';$('us').innerHTML=opt(act($('ud').value),s=>s.id)}
-function tp(t,n){$('ub').innerHTML=`<div class="pw"><i class="fa-solid fa-key"></i> كلمة المرور المؤقتة لـ <b>${esc(n)}</b> (تظهر مرة واحدة فقط — سلّمها للموظف شخصياً، وسيُطلب منه تغييرها عند أول دخول):<code>${esc(t)}</code></div>`}
-async function addU(){$('ue').textContent='';try{const r=await api('add',{u:$('uu').value,name:$('un').value,role:$('ur').value,d:$('ud').value,unit:$('ut').value,k:$('uk').value,s:$('us').value});tp(r.temp,$('uu').value);$('uu').value=$('un').value='';loadUsr()}catch(e){$('ue').textContent=e.message}}
-async function rs(u){if(!confirm('إعادة تعيين كلمة المرور للمستخدم '+u+'؟'))return;try{const r=await api('reset',{u});tp(r.temp,u);scrollTo(0,0)}catch(e){alert(e.message)}}
-async function ac(u,on){try{await api('act',{u,on});loadUsr()}catch(e){alert(e.message)}}
-async function dl(u){if(!confirm('حذف المستخدم '+u+' نهائياً؟\nسيتم حذف كل بياناته المسجلة أيضاً. لو كان مسجّلاً بيانات حقيقية فالأفضل "تعطيل" بدل الحذف.'))return;try{await api('del',{u});loadUsr()}catch(e){alert(e.message)}}
+function uForm(){const r=$('ur').value;$('f_d').style.display=r=='admin'?'none':'';$('f_u').style.display=r=='unit'?'':'none'}
+function tp(t,n,el='ub'){$(el).innerHTML=`<div class="pw"><i class="fa-solid fa-key"></i> كلمة المرور المؤقتة لـ <b>${esc(n)}</b> (تظهر مرة واحدة فقط — سلّمها للموظف شخصياً، وسيُطلب منه تغييرها عند أول دخول):<code>${esc(t)}</code></div>`}
+async function addU(){$('ue').textContent='';try{const r=await api('add',{u:$('uu').value,name:$('un').value,role:$('ur').value,d:$('ud').value,unit:$('ut').value});tp(r.temp,$('uu').value);$('uu').value=$('un').value='';loadUsr()}catch(e){$('ue').textContent=e.message}}
+async function rs(u){if(!confirm('إعادة تعيين كلمة المرور للمستخدم '+u+'؟'))return;try{const r=await api('reset',{u});tp(r.temp,u,cur=='unit'?'mb':'ub');scrollTo(0,0)}catch(e){alert(e.message)}}
+async function ac(u,on){try{await api('act',{u,on});rl()}catch(e){alert(e.message)}}
+async function dl(u){if(!confirm('حذف المستخدم '+u+' نهائياً؟\nسيتم حذف كل بياناته المسجلة أيضاً. لو كان مسجّلاً بيانات حقيقية فالأفضل "تعطيل" بدل الحذف.'))return;try{await api('del',{u});rl()}catch(e){alert(e.message)}}
+function home(){if(!U)return show('login');if(U.mustChange)return show('pw');if(U.role=='clinic')return show('staff');show('mgr');tab('dash')}
+const ctx=()=>{const O=U.role=='unit';return[O?U.directorate:U.role=='admin'?$('vd2').value:U.directorate,O?U.unit:$('vu2').value]};
+async function initUnit(){const A=U.role=='admin',O=U.role=='unit';$('upSel').style.display=O?'none':'';$('us_d').style.display=A?'':'none';$('upAdd').style.display=A||O?'':'none';SVS=await api('svc');
+ if(O)return loadUnit();if(A&&!$('vd2').options.length)$('vd2').innerHTML=opt(Object.keys(DIRS));if(!A)$('vd2').innerHTML=`<option>${esc(U.directorate)}</option>`;vu()}
+function vu(){$('vu2').innerHTML=opt(DIRS[U.role=='admin'?$('vd2').value:U.directorate]);loadUnit()}
+function mForm(){$('mfs').style.display=$('mk').value=='nurse'?'':'none';$('ms').innerHTML=opt(act(ctx()[0]),s=>s.id)}
+async function loadUnit(){try{const[d,u]=ctx(),[us,r]=await Promise.all([api('users'),api('dash')]),M=us.filter(x=>x.role=='clinic'&&x.directorate==d&&x.unit==u),S=r.subs.filter(x=>x.directorate==d&&x.unit==u),can=U.role=='admin'||U.role=='unit';
+ $('upn').textContent=u;$('upm').textContent=d+' — '+M.length+' عضو مسجل';
+ $('mt').innerHTML='<tr><th>الاسم</th><th>المستخدم</th><th>الوظيفة</th><th>العيادة</th><th>تردد اليوم</th><th></th></tr>'+(M.map(x=>{const m=S.filter(y=>y.user_id==x.id);
+  return`<tr><td>${esc(x.name)}${x.active!='Y'?' <span class="b no">معطّل</span>':''}</td><td dir="ltr">${esc(x.username)}</td><td>${KN[x.kind]}</td><td>${x.kind=='nurse'?esc(sn(x.service)):'متغيرة'}</td><td>${m.length?`<span class="b ok"><i class="fa-solid fa-check"></i> ${sum(m,y=>y.count)} · ${hm(m[0].updated_at)}</span>`:'<span class="b no"><i class="fa-solid fa-clock"></i> لم يُسجّل</span>'}</td><td>${can?acts(x):''}</td></tr>`}).join('')||'<tr><td colspan="6" class="mu">لا يوجد أعضاء مسجلين بعد</td></tr>');mForm()}catch(e){alert(e.message)}}
+async function addM(){$('merr').textContent='';try{const[d,u]=ctx(),r=await api('add',{u:$('mus').value,name:$('mn').value,role:'clinic',d,unit:u,k:$('mk').value,s:$('ms').value});tp(r.temp,$('mus').value,'mb');$('mus').value=$('mn').value='';loadUnit()}catch(e){$('merr').textContent=e.message}}
 SB.auth.getSession().then(({data})=>data.session?api('me').then(r=>{U=r.user;go()}).catch(()=>show('login')):show('login'));
 </script></body></html>
