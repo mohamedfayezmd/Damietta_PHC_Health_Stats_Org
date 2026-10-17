@@ -80,7 +80,7 @@ footer{flex-direction:column;text-align:center}footer a{display:flex;justify-con
 <div id="p_usr" class="hid"><div class="card"><h3><i class="fa-solid fa-user-plus"></i> إضافة مستخدم</h3><div class="row"><div><label>الاسم</label><input id="un"></div><div><label>اسم المستخدم (إنجليزي)</label><input id="uu" dir="ltr" autocapitalize="none"></div>
 <div><label>الصلاحية</label><select id="ur" onchange="uForm()"><option value="unit">وحدة / مركز</option><option value="dept">الإدارة الصحية</option><option value="admin">مديرية الشئون الصحية</option></select></div></div>
 <div class="row"><div id="f_d"><label>الإدارة</label><select id="ud" onchange="uUnits();uForm()"></select></div><div id="f_u"><label>الوحدة</label><select id="ut"></select></div></div>
-<div class="err" id="ue"></div><div id="ub"></div><button class="w" onclick="addU()"><i class="fa-solid fa-user-plus"></i> إضافة</button></div><div class="card sc"><table id="ul"></table></div></div></section>
+<div class="err" id="ue"></div><div id="ub"></div><button class="w" onclick="addU()"><i class="fa-solid fa-user-plus"></i> إضافة</button></div><div class="card sc"><label style="font-weight:400"><input type="checkbox" id="ua" style="width:auto" onchange="loadUsr()"> إظهار أعضاء الوحدات (تمريض وأطباء)</label><table id="ul"></table></div></div></section>
 </main>
 <footer><div><p style="margin:0;color:#cbd5e1">جميع حقوق الفكرة والتصميم والنشر محفوظة لـ <b>د. محمد فايز المحلاوي</b></p><p style="margin:2px 0 0">المنصة تحت الاختبار والترخيص لتسهيل سير العمل وخدمة المواطنين والمجتمع بمديرية الصحة بدمياط</p></div>
 <a target="_blank" href="https://wa.me/201028945823?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%AD%D8%AA%D8%A7%D8%AC%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D8%A5%D8%AD%D8%B5%D8%A7%D8%A1%20%D8%A7%D9%84%D9%8A%D9%88%D9%85%D9%8A"><i class="fa-brands fa-whatsapp"></i> <span dir="ltr">01028945823</span> — تواصل مع مسؤول المنصة</a></footer>
@@ -94,7 +94,7 @@ const DIRS0={
 "إدارة الزرقا":"مركز الزرقا|مركز السرو|دقهلة|كفر المياسرة|الزعاترة|شرمساح|ميت الخولى|الباز|قرية السلام|مركز سيف الدين|حجازى حسنين|عطا الله|الكاشف الجديد|كفر تقى|مكتب صحة الزرقا",
 "إدارة كفر البطيخ":"رعاية كفر البطيخ|البساتين|الرياض|أم الرضا|الركابية|جمصة"};
 const DIRS=Object.fromEntries(Object.entries(DIRS0).map(([k,v])=>[k,v.split('|')]));
-let U=null,SVS=[],DR=[],DS=[],MY=[],charts={};
+let U=null,SVS=[],DR=[],DS=[],UST=[],MY=[],charts={};
 const $=i=>document.getElementById(i),esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const KN={nurse:'تمريض',doctor:'طبيب'},RL={unit:'وحدة / مركز',dept:'الإدارة الصحية',admin:'مديرية الشئون الصحية'};
 const sn=id=>(SVS.find(s=>s.id==id)||{}).name||'—',act=d=>SVS.filter(s=>s.active&&(!s.directorate||s.directorate==d));
@@ -118,7 +118,7 @@ async function api0(a,d){switch(a){
  case 'svdel':return ck(await SB.from('services').update({active:false}).eq('id',d.id));
  case 'me':{const p=await myProf();return{user:prof(p),rows:ck(await SB.from('submissions').select('date,service,count,updated_at').eq('user_id',p.id).order('date',{ascending:false}).limit(60))}}
  case 'sub':{const c=parseInt(d.c,10);if(!(c>=0&&c<=9999))throw Error('أدخل رقماً صحيحاً بين 0 و 9999');ck(await SB.rpc('submit',{c,s:d.s||null}));return{ok:1}}
- case 'dash':{const[u,s]=await Promise.all([SB.from('profiles').select('*').eq('role','clinic').eq('active',true).limit(1000),SB.from('submissions').select('user_id,directorate,unit,service,kind,count,updated_at').eq('date',td()).limit(2000)]);return{rows:ck(u).map(prof),subs:ck(s)}}
+ case 'dash':{const[u,s,w]=await Promise.all([SB.from('profiles').select('*').eq('role','clinic').eq('active',true).limit(1000),SB.from('submissions').select('user_id,directorate,unit,service,kind,count,updated_at').eq('date',td()).limit(2000),SB.rpc('unit_status')]);return{rows:ck(u).map(prof),subs:ck(s),us:ck(w)}}
  case 'rep':return ck(await SB.rpc('report',{f:d.f,t:d.to})).map(x=>({directorate:x.directorate,unit:x.unit,service:x.service,kind:x.kind,count:+x.total}));
  case 'users':return ck(await SB.from('profiles').select('*').order('created_at').limit(1000)).map(prof);
  default:return adm({a,...d})}}
@@ -147,16 +147,16 @@ async function doSub(){$('se').textContent='';const v=$('sc').value;if(v==='')re
  try{await api('sub',{c:v,s:U.kind=='doctor'?$('ssv').value:null});go()}catch(e){$('se').style.color='';$('se').textContent=e.message}}
 let cur='dash';function tab(t){cur=t;['dash','rep','srv','unit','usr'].forEach(x=>{$('p_'+x).style.display=x==t?'block':'none';$('t_'+x).className=x==t?'on':''});
  if(t=='dash')loadDash();if(t=='rep'){if(!$('rf').value){const n=td();$('rf').value=n.slice(0,8)+'01';$('rt').value=n}loadRep()}if(t=='srv')loadSrv();if(t=='unit')initUnit();if(t=='usr')loadUsr()}
-async function loadDash(){try{const r=await api('dash');DR=r.rows;DS=r.subs;const A=U.role=='admin',O=U.role=='unit';
+async function loadDash(){try{const r=await api('dash');DR=r.rows;DS=r.subs;UST=r.us;const A=U.role=='admin',O=U.role=='unit';
  $('df').innerHTML='<option value="">كل الإدارات</option>'+(A?opt(Object.keys(DIRS)):'');$('fdw').style.display=A?'':'none';$('fnw').style.display=O?'none':'';
  $('dn').innerHTML='<option value="">كل الوحدات</option>'+(!A&&!O?opt(DIRS[U.directorate]):'');drawDash()}catch(e){alert(e.message)}}
 function fDir(){const d=$('df').value;$('dn').innerHTML='<option value="">كل الوحدات</option>'+(d?opt(DIRS[d]):'');drawDash()}
-function drawDash(){const A=U.role=='admin',D=A||U.role=='dept',f=A?$('df').value:'',n=$('dn').value,s=$('ds').value,
+function drawDash(){const A=U.role=='admin',D=A||U.role=='dept',V=D||U.role=='unit',f=A?$('df').value:'',n=$('dn').value,s=$('ds').value,
  R=DR.filter(x=>(!f||x.directorate==f)&&(!n||x.unit==n)),S=DS.filter(x=>(!f||x.directorate==f)&&(!n||x.unit==n)),done=new Set(S.map(x=>x.user_id));
  $('k1').textContent=R.filter(x=>done.has(x.id)).length+' / '+R.length;$('k2').textContent=R.filter(x=>!done.has(x.id)).length;$('k3').textContent=sum(S,x=>x.count);
- $('k4w').style.display=$('uw').style.display=D?'':'none';
- if(D){const dirs=f?[f]:Object.keys(DIRS).filter(d=>A||d==U.directorate);let a=0,t=0;
-  $('uc').innerHTML=dirs.map(d=>{const us=DIRS[d].filter(u=>!n||u==n).map(u=>{const m=S.filter(x=>x.directorate==d&&x.unit==u);return{u,ok:m.length>0,c:sum(m,x=>x.count)}}),k=us.filter(x=>x.ok).length;a+=k;t+=us.length;
+ $('k4w').style.display=$('uw').style.display=V?'':'none';
+ if(V){const dirs=f?[f]:Object.keys(DIRS).filter(d=>A||d==U.directorate);let a=0,t=0;
+  $('uc').innerHTML=dirs.map(d=>{const us=DIRS[d].filter(u=>!n||u==n).map(u=>{const m=UST.filter(x=>x.directorate==d&&x.unit==u);return{u,ok:m.length>0,c:sum(m,x=>+x.total)}}),k=us.filter(x=>x.ok).length;a+=k;t+=us.length;
    const v=us.filter(x=>s==''||(s=='1')==x.ok);if(!v.length)return'';
    return`<div class="dg"><div class="dh"><span><i class="fa-solid fa-location-dot" style="color:#0284c7"></i> ${esc(d)}</span><span class="tag">${k} / ${us.length}</span></div><div class="pb"><i style="width:${us.length?Math.round(k*100/us.length):0}%"></i></div><div class="ug">${v.map(x=>`<div class="ut ${x.ok?'ok':'no'}"><i class="fa-solid ${x.ok?'fa-check':'fa-clock'}"></i><span>${esc(x.u)}<small>${x.ok?x.c+' حالة':'لم يبلّغ بعد'}</small></span></div>`).join('')}</div></div>`}).join('')||'<p class="mu">لا توجد نتائج</p>';$('k4').textContent=a+' / '+t}
  const bs=group(S,x=>sn(x.service),x=>x.count);ch('c1','bar',Object.keys(bs),Object.values(bs),D);
@@ -175,7 +175,7 @@ async function delSrv(id){if(!confirm('حذف هذه الخدمة؟ ستختفي
 const acts=u=>(u.active=='Y'?`<button class="s g" onclick="rs('${esc(u.username)}')" title="إعادة تعيين كلمة المرور"><i class="fa-solid fa-key"></i></button> `:'')+(u.username!=U.username?`<button class="s ${u.active=='Y'?'g':''}" onclick="ac('${esc(u.username)}',${u.active!='Y'})" title="تعطيل / تفعيل"><i class="fa-solid ${u.active=='Y'?'fa-ban':'fa-circle-check'}"></i></button> <button class="s r" onclick="dl('${esc(u.username)}')" title="حذف"><i class="fa-solid fa-trash"></i></button>`:'');
 const rl=()=>cur=='unit'?loadUnit():loadUsr();
 async function loadUsr(){try{SVS=await api('svc');if(!$('ud').options.length){$('ud').innerHTML=opt(Object.keys(DIRS));uUnits()}uForm();
- const r=(await api('users')).filter(u=>u.role!='clinic');$('ul').innerHTML='<tr><th>الاسم</th><th>المستخدم</th><th>الصلاحية</th><th>الوحدة</th><th></th></tr>'+r.map(u=>`<tr><td>${esc(u.name)}${u.active!='Y'?' <span class="b no">معطّل</span>':''}</td><td dir="ltr">${esc(u.username)}</td><td>${RL[u.role]}${u.role=='dept'?' - '+esc(u.directorate):''}</td><td>${esc(u.unit)}</td><td>${acts(u)}</td></tr>`).join('')}catch(e){alert(e.message)}}
+ const r=(await api('users')).filter(u=>$('ua').checked||u.role!='clinic');$('ul').innerHTML='<tr><th>الاسم</th><th>المستخدم</th><th>الصلاحية</th><th>الوحدة</th><th></th></tr>'+r.map(u=>`<tr><td>${esc(u.name)}${u.active!='Y'?' <span class="b no">معطّل</span>':''}</td><td dir="ltr">${esc(u.username)}</td><td>${RL[u.role]||KN[u.kind]}${u.role=='dept'?' - '+esc(u.directorate):''}</td><td>${esc(u.unit)}</td><td>${acts(u)}</td></tr>`).join('')}catch(e){alert(e.message)}}
 function uUnits(){$('ut').innerHTML=opt(DIRS[$('ud').value])}
 function uForm(){const r=$('ur').value;$('f_d').style.display=r=='admin'?'none':'';$('f_u').style.display=r=='unit'?'':'none'}
 function tp(t,n,el='ub'){$(el).innerHTML=`<div class="pw"><i class="fa-solid fa-key"></i> كلمة المرور المؤقتة لـ <b>${esc(n)}</b> (تظهر مرة واحدة فقط — سلّمها للموظف شخصياً، وسيُطلب منه تغييرها عند أول دخول):<code>${esc(t)}</code></div>`}
